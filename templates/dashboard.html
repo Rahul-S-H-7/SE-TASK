@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Smart Attendance{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="fw-bold text-dark"><i class="bi bi-speedometer2 text-primary"></i> Attendance Dashboard</h2>
+        <p class="text-muted">Overview of students, conducted class sessions, and exam eligibility tracking.</p>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card stat-card bg-primary text-white p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="text-uppercase mb-1 opacity-75">Total Students</h6>
+                    <h2 class="mb-0 fw-bold">{{ summary.student_count }}</h2>
+                </div>
+                <i class="bi bi-people fs-1 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card bg-info text-white p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="text-uppercase mb-1 opacity-75">Conducted Sessions</h6>
+                    <h2 class="mb-0 fw-bold">{{ summary.session_count }}</h2>
+                </div>
+                <i class="bi bi-journal-check fs-1 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card bg-success text-white p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="text-uppercase mb-1 opacity-75">Present Entries</h6>
+                    <h2 class="mb-0 fw-bold">{{ summary.total_present }}</h2>
+                </div>
+                <i class="bi bi-check-circle fs-1 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card bg-secondary text-white p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="text-uppercase mb-1 opacity-75">Total Records</h6>
+                    <h2 class="mb-0 fw-bold">{{ summary.total_records }}</h2>
+                </div>
+                <i class="bi bi-clipboard-data fs-1 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 fw-bold text-dark"><i class="bi bi-table text-primary me-2"></i> Student Attendance & Eligibility Status</h5>
+        <span class="badge bg-light text-dark border">Criterion: &ge; 75% for Exam Eligibility</span>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-3">Student ID</th>
+                        <th>Name</th>
+                        <th>Course</th>
+                        <th class="text-center">Attended / Total</th>
+                        <th class="text-center">Percentage</th>
+                        <th class="text-center">Eligibility</th>
+                        <th class="text-end pe-3">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if summary.students %}
+                        {% for s in summary.students %}
+                        <tr>
+                            <td class="ps-3 fw-bold">{{ s.student_id }}</td>
+                            <td>{{ s.name }}</td>
+                            <td><span class="badge bg-secondary-subtle text-secondary-emphasis">{{ s.course }}</span></td>
+                            <td class="text-center">{{ s.attended }} / {{ s.total }}</td>
+                            <td class="text-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <span class="fw-bold me-2">{{ s.percentage }}%</span>
+                                    <div class="progress flex-grow-1" style="height: 6px; max-width: 80px;">
+                                        <div class="progress-bar {% if s.is_eligible %}bg-success{% else %}bg-danger{% endif %}" 
+                                             role="progressbar" style="width: {{ s.percentage }}%;"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                {% if s.is_eligible %}
+                                    <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Eligible</span>
+                                {% else %}
+                                    <span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i> Ineligible</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end pe-3">
+                                <a href="{{ url_for('student_report', student_id=s.id) }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-file-earmark-person"></i> History
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">
+                                <i class="bi bi-info-circle fs-3 d-block mb-2"></i>
+                                No students registered yet. Click on <strong>Students</strong> to add records.
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

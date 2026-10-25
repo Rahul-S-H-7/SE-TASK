@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Student Report - Smart Attendance{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary btn-sm mb-2">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+        <h2 class="fw-bold text-dark"><i class="bi bi-person-badge text-primary"></i> Student Attendance Profile</h2>
+        <p class="text-muted">Detailed attendance summary and session logs for {{ report.student.name }}.</p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card p-3 h-100">
+            <h5 class="fw-bold mb-3 border-bottom pb-2">Student Information</h5>
+            <div class="mb-2"><strong>Full Name:</strong> {{ report.student.name }}</div>
+            <div class="mb-2"><strong>Student ID:</strong> <span class="badge bg-light text-dark border">{{ report.student.student_id }}</span></div>
+            <div class="mb-2"><strong>Course/Class:</strong> {{ report.student.course }}</div>
+            <div class="mb-3"><strong>Enrolled Since:</strong> <small class="text-muted">{{ report.student.created_at }}</small></div>
+            
+            <hr>
+            
+            <h6 class="fw-bold mb-2">Exam Eligibility Status</h6>
+            {% if report.stats.is_eligible %}
+                <div class="alert alert-success d-flex align-items-center mb-0" role="alert">
+                    <i class="bi bi-check-circle-fill fs-3 me-3 text-success"></i>
+                    <div>
+                        <strong>Eligible for Exams</strong><br>
+                        Attendance is at or above 75%.
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-danger d-flex align-items-center mb-0" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill fs-3 me-3 text-danger"></i>
+                    <div>
+                        <strong>Ineligible for Exams</strong><br>
+                        Attendance is below the 75% requirement.
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card p-3 text-center bg-light">
+                    <small class="text-muted text-uppercase fw-semibold">Conducted Classes</small>
+                    <h3 class="fw-bold text-dark mt-1">{{ report.stats.total }}</h3>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-3 text-center bg-light">
+                    <small class="text-muted text-uppercase fw-semibold">Attended Classes</small>
+                    <h3 class="fw-bold text-success mt-1">{{ report.stats.attended }}</h3>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-3 text-center bg-light">
+                    <small class="text-muted text-uppercase fw-semibold">Attendance %</small>
+                    <h3 class="fw-bold {% if report.stats.is_eligible %}text-success{% else %}text-danger{% endif %} mt-1">
+                        {{ report.stats.percentage }}%
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-clock-history text-primary me-2"></i> Attendance Log</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-3">Date</th>
+                                <th>Subject</th>
+                                <th>Topic</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-end pe-3">Recorded At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if report.history %}
+                                {% for h in report.history %}
+                                <tr>
+                                    <td class="ps-3 fw-semibold">{{ h.session_date }}</td>
+                                    <td>{{ h.subject }}</td>
+                                    <td class="text-muted">{{ h.topic or '-' }}</td>
+                                    <td class="text-center">
+                                        {% if h.status == 'Present' %}
+                                            <span class="badge bg-success">Present</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Absent</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-end pe-3 text-muted small">{{ h.marked_at }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-muted">
+                                        No attendance entries recorded for this student yet.
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

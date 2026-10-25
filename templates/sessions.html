@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Class Sessions - Smart Attendance{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="fw-bold text-dark"><i class="bi bi-journal-text text-primary"></i> Class Sessions</h2>
+        <p class="text-muted">Create and manage conducted lecture sessions for attendance tracking.</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h5 class="fw-bold mb-3"><i class="bi bi-calendar-plus text-primary"></i> Schedule Class Session</h5>
+            <form action="{{ url_for('sessions') }}" method="POST">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Date</label>
+                    <input type="date" name="session_date" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Subject</label>
+                    <input type="text" name="subject" class="form-control" placeholder="e.g. Software Engineering" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Course / Class</label>
+                    <input type="text" name="course" class="form-control" placeholder="e.g. BCA 5th Sem" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Topic / Details (Optional)</label>
+                    <input type="text" name="topic" class="form-control" placeholder="e.g. CI/CD & Automated Testing">
+                </div>
+                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-plus-circle me-1"></i> Create Session</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-clock-history text-primary me-2"></i> Conducted Sessions</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-3">ID</th>
+                                <th>Date</th>
+                                <th>Subject</th>
+                                <th>Course</th>
+                                <th>Topic</th>
+                                <th class="text-end pe-3">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if sessions %}
+                                {% for ses in sessions %}
+                                <tr>
+                                    <td class="ps-3 text-muted">#{{ ses.id }}</td>
+                                    <td class="fw-semibold">{{ ses.session_date }}</td>
+                                    <td class="fw-bold text-dark">{{ ses.subject }}</td>
+                                    <td><span class="badge bg-secondary-subtle text-secondary-emphasis">{{ ses.course }}</span></td>
+                                    <td class="text-muted">{{ ses.topic or '-' }}</td>
+                                    <td class="text-end pe-3">
+                                        <a href="{{ url_for('attendance', session_id=ses.id) }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-check2-square"></i> Take Attendance
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="6" class="text-center py-4 text-muted">
+                                        No class sessions created yet. Create a session to start marking attendance.
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
