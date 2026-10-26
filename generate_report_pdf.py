@@ -104,7 +104,7 @@ def build_pdf(
     filename: str = "Smart_Attendance_CI_Assignment.pdf",
     student_name: str = "[STUDENT NAME / Sandeep Kharwar / Rahul S H]",
     usn: str = "[STUDENT USN / NU24UCA063]",
-    github_repo_url: str = "https://github.com/Rahul-S-H-7/smart-attendance-ci"
+    github_repo_url: str = "https://github.com/Rahul-S-H-7/SE-TASK"
 ):
     pdf_path = os.path.abspath(filename)
     doc = SimpleDocTemplate(
@@ -351,9 +351,9 @@ E       assert False is True
 
     story.append(create_placeholder_box(
         "Failing CI Run Evidence on GitHub Actions",
-        "Repository: <i>Rahul-S-H-7/smart-attendance-ci</i> &bull; Branch: <b>demo/failing-ci</b><br/>"
+        "Repository: <i>Rahul-S-H-7/SE-TASK</i> &bull; Branch: <b>demo/failing-ci</b><br/>"
         "Workflow: <b>CI / test</b> (failed with exit code 1) &bull; Commit: <code>f34b763</code><br/>"
-        "URL: <u>https://github.com/Rahul-S-H-7/smart-attendance-ci/actions</u>",
+        "URL: <u>https://github.com/Rahul-S-H-7/SE-TASK/actions</u>",
         height=130
     ))
 
@@ -403,9 +403,9 @@ tests/test_attendance.py::test_independent_calculations_multiple_students PASSED
 
     story.append(create_placeholder_box(
         "Passing CI Run Evidence on GitHub Actions",
-        "Repository: <i>Rahul-S-H-7/smart-attendance-ci</i> &bull; Branch: <b>main / demo/failing-ci</b><br/>"
+        "Repository: <i>Rahul-S-H-7/SE-TASK</i> &bull; Branch: <b>main / demo/failing-ci</b><br/>"
         "Workflow: <b>CI / test</b> (completed successfully with green checkmark) &bull; Commit: <code>cd59cc9</code><br/>"
-        "URL: <u>https://github.com/Rahul-S-H-7/smart-attendance-ci/actions</u>",
+        "URL: <u>https://github.com/Rahul-S-H-7/SE-TASK/actions</u>",
         height=125
     ))
     story.append(Spacer(1, 8))
