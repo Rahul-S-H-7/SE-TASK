@@ -43,7 +43,8 @@ def calculate_attendance(attended_classes: int, conducted_classes: int) -> Dict[
         }
 
     percentage = round((attended_classes / conducted_classes) * 100.0, 2)
-    is_eligible = percentage >= ELIGIBILITY_THRESHOLD
+    # Intentional defect for CI demonstration: strictly greater than 75% instead of >= 75%
+    is_eligible = percentage > ELIGIBILITY_THRESHOLD
 
     return {
         "attended": attended_classes,
