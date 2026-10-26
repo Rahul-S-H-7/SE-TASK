@@ -9,7 +9,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, KeepTogether, Preformatted
+    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, KeepTogether, Preformatted, Image
 )
 from reportlab.pdfgen import canvas
 
@@ -349,13 +349,32 @@ E       assert False is True
     story.append(create_code_block(failing_test_box))
     story.append(Spacer(1, 8))
 
-    story.append(create_placeholder_box(
-        "Failing CI Run Evidence on GitHub Actions",
-        "Repository: <i>Rahul-S-H-7/SE-TASK</i> &bull; Branch: <b>demo/intentional-defect</b><br/>"
-        "Workflow Run #5: <b>CI / test</b> (failed with exit code 1) &bull; Commit: <code>78f3421</code><br/>"
-        "URL: <u>https://github.com/Rahul-S-H-7/SE-TASK/actions/runs/40266239208</u>",
-        height=130
-    ))
+    failing_img_path = os.path.join(os.path.dirname(__file__), "screenshots", "failing_run_cropped.png")
+    if os.path.exists(failing_img_path):
+        failing_img = Image(failing_img_path, width=504, height=75)
+        caption_style = ParagraphStyle(
+            'CapStyle1', fontName='Helvetica', fontSize=8, leading=10, textColor=colors.HexColor("#555555"), alignment=1
+        )
+        caption = Paragraph("<b>Figure 1:</b> GitHub Actions Run #5 (failure) triggered by intentional 75% boundary defect (Commit <code>78f3421</code>).", caption_style)
+        img_table = Table([[failing_img], [caption]], colWidths=[504])
+        img_table.setStyle(TableStyle([
+            ('BOX', (0, 0), (-1, -1), 0.75, colors.HexColor("#d0d7de")),
+            ('BACKGROUND', (0, 0), (-1, -1), colors.HexColor("#ffffff")),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('TOPPADDING', (0, 0), (-1, -1), 4),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
+            ('LEFTPADDING', (0, 0), (-1, -1), 4),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 4),
+        ]))
+        story.append(img_table)
+    else:
+        story.append(create_placeholder_box(
+            "Failing CI Run Evidence on GitHub Actions",
+            "Repository: <i>Rahul-S-H-7/SE-TASK</i> &bull; Branch: <b>demo/intentional-defect</b><br/>"
+            "Workflow Run #5: <b>CI / test</b> (failed with exit code 1) &bull; Commit: <code>78f3421</code><br/>"
+            "URL: <u>https://github.com/Rahul-S-H-7/SE-TASK/actions/runs/40266239208</u>",
+            height=130
+        ))
 
     story.append(PageBreak())
 
@@ -399,15 +418,34 @@ tests/test_attendance.py::test_independent_calculations_multiple_students PASSED
 ============================= 19 passed in 0.22s =============================="""
     )
     story.append(create_code_block(passing_test_box))
-    story.append(Spacer(1, 8))
+    story.append(Spacer(1, 6))
 
-    story.append(create_placeholder_box(
-        "Passing CI Run Evidence on GitHub Actions",
-        "Repository: <i>Rahul-S-H-7/SE-TASK</i> &bull; Branch: <b>main & demo/failing-ci</b><br/>"
-        "Workflow Run #3 & #4: <b>CI / test</b> (completed successfully with green checkmark)<br/>"
-        "URL: <u>https://github.com/Rahul-S-H-7/SE-TASK/actions/runs/40266133292</u>",
-        height=125
-    ))
+    passing_img_path = os.path.join(os.path.dirname(__file__), "screenshots", "passing_run_cropped.png")
+    if os.path.exists(passing_img_path):
+        passing_img = Image(passing_img_path, width=504, height=88)
+        caption_style2 = ParagraphStyle(
+            'CapStyle2', fontName='Helvetica', fontSize=8, leading=10, textColor=colors.HexColor("#555555"), alignment=1
+        )
+        caption2 = Paragraph("<b>Figure 2:</b> GitHub Actions Runs #4 &amp; #3 (success) demonstrating passing test suite on restored code.", caption_style2)
+        img_table2 = Table([[passing_img], [caption2]], colWidths=[504])
+        img_table2.setStyle(TableStyle([
+            ('BOX', (0, 0), (-1, -1), 0.75, colors.HexColor("#d0d7de")),
+            ('BACKGROUND', (0, 0), (-1, -1), colors.HexColor("#ffffff")),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('TOPPADDING', (0, 0), (-1, -1), 4),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
+            ('LEFTPADDING', (0, 0), (-1, -1), 4),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 4),
+        ]))
+        story.append(img_table2)
+    else:
+        story.append(create_placeholder_box(
+            "Passing CI Run Evidence on GitHub Actions",
+            "Repository: <i>Rahul-S-H-7/SE-TASK</i> &bull; Branch: <b>main & demo/failing-ci</b><br/>"
+            "Workflow Run #3 & #4: <b>CI / test</b> (completed successfully with green checkmark)<br/>"
+            "URL: <u>https://github.com/Rahul-S-H-7/SE-TASK/actions/runs/40266133292</u>",
+            height=125
+        ))
     story.append(Spacer(1, 8))
 
     story.append(Paragraph("6. Conclusion", h1_style))
