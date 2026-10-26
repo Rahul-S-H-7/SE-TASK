@@ -322,7 +322,7 @@ jobs:
 
     failing_desc = (
         "To verify that the continuous integration pipeline actively catches defects before deployment, an intentional "
-        "bug was introduced in <code>attendance_logic.py</code> on branch <code>demo/failing-ci</code> (Commit: <code>f34b763</code>). "
+        "bug was introduced in <code>attendance_logic.py</code> on branch <code>demo/intentional-defect</code> (Commit: <code>78f3421</code>). "
         "The eligibility condition was changed from <code>percentage &gt;= ELIGIBILITY_THRESHOLD</code> to strictly "
         "<code>percentage &gt; ELIGIBILITY_THRESHOLD</code>. This broke the critical 75.0% boundary condition where a student with "
         "exactly 75% attendance was incorrectly marked as ineligible."
@@ -344,16 +344,16 @@ ______________________ test_exactly_75_percent_boundary _______________________
         assert result["percentage"] == 75.0
 >       assert result["is_eligible"] is True
 E       assert False is True
-======================== 2 failed, 17 passed in 0.27s ========================="""
+======================== 2 failed, 17 passed in 0.26s ========================="""
     )
     story.append(create_code_block(failing_test_box))
     story.append(Spacer(1, 8))
 
     story.append(create_placeholder_box(
         "Failing CI Run Evidence on GitHub Actions",
-        "Repository: <i>Rahul-S-H-7/SE-TASK</i> &bull; Branch: <b>demo/failing-ci</b><br/>"
-        "Workflow: <b>CI / test</b> (failed with exit code 1) &bull; Commit: <code>f34b763</code><br/>"
-        "URL: <u>https://github.com/Rahul-S-H-7/SE-TASK/actions</u>",
+        "Repository: <i>Rahul-S-H-7/SE-TASK</i> &bull; Branch: <b>demo/intentional-defect</b><br/>"
+        "Workflow Run #5: <b>CI / test</b> (failed with exit code 1) &bull; Commit: <code>78f3421</code><br/>"
+        "URL: <u>https://github.com/Rahul-S-H-7/SE-TASK/actions/runs/40266239208</u>",
         height=130
     ))
 
@@ -365,9 +365,9 @@ E       assert False is True
     story.append(Paragraph("<b>B. Passing run restoration</b>", ParagraphStyle('SubH2', fontName='Helvetica-Bold', fontSize=10.5, leading=14, spaceBefore=4, spaceAfter=4)))
 
     passing_desc = (
-        "The defect was resolved on branch <code>demo/failing-ci</code> (Commit: <code>cd59cc9</code>) by restoring the "
+        "The defect was resolved on branch <code>demo/failing-ci</code> (Commit: <code>dc54adf</code>) by restoring the "
         "inclusive comparison <code>percentage &gt;= ELIGIBILITY_THRESHOLD</code>. All 19 tests in the test suite passed "
-        "cleanly both locally and on the GitHub Actions runner, achieving 100% test success."
+        "cleanly both locally and on the GitHub Actions runner (Workflow Run #4), achieving 100% test success."
     )
     story.append(Paragraph(passing_desc, body_style))
 
@@ -396,16 +396,16 @@ tests/test_attendance.py::test_nonexistent_student_attendance_rejected PASSED [ 
 tests/test_attendance.py::test_nonexistent_session_attendance_rejected PASSED [ 89%]
 tests/test_attendance.py::test_missing_student_details_rejected PASSED   [ 94%]
 tests/test_attendance.py::test_independent_calculations_multiple_students PASSED [100%]
-============================= 19 passed in 0.25s =============================="""
+============================= 19 passed in 0.22s =============================="""
     )
     story.append(create_code_block(passing_test_box))
     story.append(Spacer(1, 8))
 
     story.append(create_placeholder_box(
         "Passing CI Run Evidence on GitHub Actions",
-        "Repository: <i>Rahul-S-H-7/SE-TASK</i> &bull; Branch: <b>main / demo/failing-ci</b><br/>"
-        "Workflow: <b>CI / test</b> (completed successfully with green checkmark) &bull; Commit: <code>cd59cc9</code><br/>"
-        "URL: <u>https://github.com/Rahul-S-H-7/SE-TASK/actions</u>",
+        "Repository: <i>Rahul-S-H-7/SE-TASK</i> &bull; Branch: <b>main & demo/failing-ci</b><br/>"
+        "Workflow Run #3 & #4: <b>CI / test</b> (completed successfully with green checkmark)<br/>"
+        "URL: <u>https://github.com/Rahul-S-H-7/SE-TASK/actions/runs/40266133292</u>",
         height=125
     ))
     story.append(Spacer(1, 8))
