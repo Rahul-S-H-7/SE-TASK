@@ -101,7 +101,7 @@ def create_placeholder_box(title: str, description: str, width: float = 504, hei
 
 
 def build_pdf(
-    filename: str = "Smart_Attendance_CI_Assignment.pdf",
+    filename: str = "NU24UCA058_Task.pdf",
     student_name: str = "Rahul Hunagund",
     usn: str = "NU24UCA058",
     github_repo_url: str = "https://github.com/Rahul-S-H-7/SE-TASK"
