@@ -3,8 +3,13 @@ Automated unit and integration tests for the Smart Attendance Management System.
 Covers business logic, edge conditions, database operations, and duplicate prevention.
 """
 import os
+import sys
 import pytest
 import sqlite3
+
+# Ensure project root is in sys.path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from attendance_logic import calculate_attendance, validate_status, ELIGIBILITY_THRESHOLD
 import db
 
